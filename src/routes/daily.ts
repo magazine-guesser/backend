@@ -6,8 +6,11 @@ export default async function (app: FastifyInstance) {
         return { hello: 'daily' }
     })
 
-    app.get('/:nr', async (request) => {
-        const { nr } = request.params as { nr: string }
+    app.get<{
+        Params: { nr: string },
+        Querystring: { year?: string }
+    }>('/:nr', async (request) => {
+        const { nr } = request.params
         return { hello: nr }
     })
 }
