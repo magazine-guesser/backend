@@ -1,5 +1,6 @@
 import Fastify from 'fastify'
 import dailyRoutes from './routes/daily'
+import healthRoute from './routes/health'
 
 const app = Fastify({ logger: true });
 
@@ -7,7 +8,8 @@ app.get('/', async () => {
     return { hello: 'world' }
 })
 
-app.register(dailyRoutes, { prefix: '/daily' })
+app.register(dailyRoutes, { prefix: '/daily' });
+app.register(healthRoute, { prefix: '/health'});
 
 const start = async () => {
     try {
