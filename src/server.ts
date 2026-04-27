@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import Fastify from 'fastify';
+import Fastify, { FastifyReply, FastifyRequest } from 'fastify';
 import dailyRoutes from './routes/daily';
 import healthRoute from './routes/health';
 import adminRoute from './routes/admin';
@@ -10,7 +10,7 @@ const repo = new DynamoMagazineRepository();
 //let cache: { date: string, magazines: Magazine[] } | null = null;
 
 app.register(dailyRoutes, { prefix: '/daily', repo });
-app.register(adminRoute, {prefix: '/admin', repo});
+app.register(adminRoute, { prefix: '/admin', repo });
 app.register(healthRoute, { prefix: '/health' });
 
 const start = async () => {

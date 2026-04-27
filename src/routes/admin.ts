@@ -1,16 +1,35 @@
-import { FastifyInstance } from 'fastify'
+import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify'
 import { IMagazineRepository, Magazine } from '../types';
 
 export default async function (app: FastifyInstance, opts: { repo: IMagazineRepository }) {
 
-    const secret = process.env.ADMIN_KEY;
+    const repo = opts.repo;
+    app.addHook('preHandler', requireAdmin)
 
     app.get<{
-        Querystring: { secret: string }
-    }>('/', async (request) => {
-        const querySecret = request.query.secret;
-        if (!secret) return { no: 'secret' };
-        if (querySecret === secret) return { yes: 'works' };
-    })
+        Params: { date: string }
+    }>('/magazines/:date', async (request) => {
+        const { date } = request.params;
 
+        const magazines = await repo.getMagazines(date);
+        return magazines;
+    });
+
+    app.put<{
+        Body: {
+            magazines: Magazine[]
+        }
+    }>('/magazines', async (request) => {
+        const { magazines } = request.body;
+        repo.putMagazines(magazines);
+        return;
+    });
+
+}
+
+const requireAdmin = async (request: FastifyRequest, reply: FastifyReply) => {
+    const key = request.headers['authorization'];
+    if (!key || key !== process.env.ADMIN_KEY) {
+        reply.code(403).send({ message: 'Unauthorized' });
+    }
 }
