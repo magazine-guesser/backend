@@ -1,13 +1,17 @@
 import Fastify from 'fastify'
 import dailyRoutes from './routes/daily'
 import healthRoute from './routes/health'
+import adminRoute from './routes/admin'
+import { Magazine } from './types';
 import { DynamoMagazineRepository } from './dynamodb';
 
 const app = Fastify({ logger: true });
 const repo = new DynamoMagazineRepository();
+//let cache: { date: string, magazines: Magazine[] } | null = null;
 
-app.register(dailyRoutes, { prefix: '/daily', repo })
-app.register(healthRoute, { prefix: '/health' })
+app.register(dailyRoutes, { prefix: '/daily', repo });
+app.register(adminRoute, {prefix: '/admin', repo});
+app.register(healthRoute, { prefix: '/health' });
 
 const start = async () => {
     try {

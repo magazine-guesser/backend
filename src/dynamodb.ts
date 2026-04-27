@@ -1,6 +1,6 @@
 import { IMagazineRepository, Magazine } from './types';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb'
-import { DynamoDBDocumentClient, QueryCommand } from '@aws-sdk/lib-dynamodb'
+import { DynamoDBDocumentClient, GetCommand, QueryCommand } from '@aws-sdk/lib-dynamodb'
 
 const client = new DynamoDBClient({});
 const docClient = DynamoDBDocumentClient.from(client);
@@ -14,7 +14,18 @@ export class DynamoMagazineRepository implements IMagazineRepository {
             ExpressionAttributeValues: {
                 ':date': date
             }
-        }))
+        }));
         return result.Items as Magazine[];
+    }
+
+    async getMagazine(date: string, nr: number): Promise<Magazine> {
+        const result = await docClient.send(new GetCommand({
+            TableName: process.env.TABLE_NAME,
+            Key: {
+                'date': date,
+                'nr': nr
+            }
+        }));
+        return result.Item as Magazine;
     }
 }

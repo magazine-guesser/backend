@@ -19,4 +19,5 @@ export type Magazine = {
 
 export interface IMagazineRepository {
     getMagazines(date: string): Promise<Magazine[]>
+    getMagazine(date: string, nr: number): Promise<Magazine>
 }
