@@ -21,4 +21,13 @@ export interface IMagazineRepository {
   getMagazines(date: string): Promise<Magazine[]>
   getMagazine(date: string, nr: number): Promise<Magazine>
   putMagazines(magazines: Magazine[]): Promise<void>
+  deleteMagazines(magazines: Magazine[]): Promise<void>
+  editMagazine(
+    date: string,
+    nr: number,
+    magazine: Magazine
+  ): Promise<{
+    deleted: Magazine | undefined
+    previous: Magazine | undefined
+  }>
 }

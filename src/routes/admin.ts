@@ -22,9 +22,20 @@ export default async function (app: FastifyInstance, opts: { repo: IMagazineRepo
   })
 
   app.delete<{
+    Body: { magazines: Magazine[] }
+  }>('/magazines', async (request) => {
+    const { magazines } = request.body
+    repo.deleteMagazines(magazines)
+    return
+  })
+
+  app.patch<{
     Params: { date: string; nr: number }
+    Body: { magazine: Magazine }
   }>('/magazines/:date/:nr', async (request) => {
-    // const { date, nr } = request.params;
+    const { date, nr } = request.params
+    const { magazine } = request.body
+    repo.editMagazine(date, nr, magazine)
   })
 }
 
