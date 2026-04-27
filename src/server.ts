@@ -1,8 +1,8 @@
-import Fastify from 'fastify'
-import dailyRoutes from './routes/daily'
-import healthRoute from './routes/health'
-import adminRoute from './routes/admin'
-import { Magazine } from './types';
+import 'dotenv/config';
+import Fastify from 'fastify';
+import dailyRoutes from './routes/daily';
+import healthRoute from './routes/health';
+import adminRoute from './routes/admin';
 import { DynamoMagazineRepository } from './dynamodb';
 
 const app = Fastify({ logger: true });
@@ -27,4 +27,4 @@ process.on('SIGTERM', async () => {
     process.exit(0);
 });
 
-start()
+start();

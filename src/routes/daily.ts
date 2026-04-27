@@ -21,7 +21,7 @@ export default async function (app: FastifyInstance, opts: { repo: IMagazineRepo
             magazines.push(...missing);
         };
 
-        return magazines;
+        return magazines.map(({ year, ...rest }) => rest);
     });
 
     app.post<{
@@ -35,7 +35,7 @@ export default async function (app: FastifyInstance, opts: { repo: IMagazineRepo
         const { date, nr } = request.params;
         const { year } = request.body;
         if (!year) return { status: 400 }
-        const magazine = await repo.getMagazine(date, nr) ?? fallback[nr];
+        const magazine = await repo.getMagazine(date, nr) ?? fallback[nr - 1];
 
         return {
             'correct_year': magazine.year,

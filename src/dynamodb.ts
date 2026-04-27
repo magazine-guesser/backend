@@ -10,10 +10,9 @@ export class DynamoMagazineRepository implements IMagazineRepository {
     async getMagazines(date: string): Promise<Magazine[]> {
         const result = await docClient.send(new QueryCommand({
             TableName: process.env.TABLE_NAME,
-            KeyConditionExpression: 'date = :date',
-            ExpressionAttributeValues: {
-                ':date': date
-            }
+            KeyConditionExpression: '#date = :date',
+            ExpressionAttributeNames: { '#date': 'date' },
+            ExpressionAttributeValues: { ':date': date }
         }));
         return result.Items as Magazine[];
     }
@@ -23,7 +22,7 @@ export class DynamoMagazineRepository implements IMagazineRepository {
             TableName: process.env.TABLE_NAME,
             Key: {
                 'date': date,
-                'nr': nr
+                'nr': Number(nr)
             }
         }));
         return result.Item as Magazine;
