@@ -1,6 +1,6 @@
 import { IMagazineRepository, Magazine } from './types';
-import { DynamoDBClient, PutRequest$ } from '@aws-sdk/client-dynamodb'
-import { BatchWriteCommand, DynamoDBDocumentClient, GetCommand, PutCommand, QueryCommand } from '@aws-sdk/lib-dynamodb'
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb'
+import { BatchWriteCommand, DynamoDBDocumentClient, GetCommand, QueryCommand } from '@aws-sdk/lib-dynamodb'
 
 const client = new DynamoDBClient({});
 const docClient = DynamoDBDocumentClient.from(client);
@@ -16,7 +16,7 @@ export class DynamoMagazineRepository implements IMagazineRepository {
             ExpressionAttributeValues: { ':date': date }
         }));
         return result.Items as Magazine[];
-    };
+    }
 
     async getMagazine(date: string, nr: number): Promise<Magazine> {
         const result = await docClient.send(new GetCommand({
@@ -27,7 +27,7 @@ export class DynamoMagazineRepository implements IMagazineRepository {
             }
         }));
         return result.Item as Magazine;
-    };
+    }
 
     async putMagazines(magazines: Magazine[]): Promise<void> {
         await docClient.send(new BatchWriteCommand({

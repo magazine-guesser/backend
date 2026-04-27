@@ -9,23 +9,29 @@ export default async function (app: FastifyInstance, opts: { repo: IMagazineRepo
     app.get<{
         Params: { date: string }
     }>('/magazines/:date', async (request) => {
-        const { date } = request.params;
 
+        const { date } = request.params;
         const magazines = await repo.getMagazines(date);
         return magazines;
     });
 
     app.put<{
-        Body: {
-            magazines: Magazine[]
-        }
+        Body: { magazines: Magazine[] }
     }>('/magazines', async (request) => {
+
         const { magazines } = request.body;
         repo.putMagazines(magazines);
         return;
     });
 
+    app.delete<{
+        Params: { date: string, nr: number }
+    }>('/magazines/:date/:nr', async (request) => {
+
+        // const { date, nr } = request.params;
+    })
 }
+
 
 const requireAdmin = async (request: FastifyRequest, reply: FastifyReply) => {
     const key = request.headers['authorization'];

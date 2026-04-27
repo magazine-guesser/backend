@@ -19,9 +19,9 @@ export default async function (app: FastifyInstance, opts: { repo: IMagazineRepo
             const existingNrs = new Set(magazines.map(mag => mag.nr));
             const missing = fallback.filter(f => !existingNrs.has(f.nr));
             magazines.push(...missing);
-        };
+        }
 
-        return magazines.map(({ year, ...rest }) => rest);
+        return magazines.map(({ year: _year, ...rest }) => rest);
     });
 
     app.post<{

@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import Fastify, { FastifyReply, FastifyRequest } from 'fastify';
+import Fastify from 'fastify';
 import dailyRoutes from './routes/daily';
 import healthRoute from './routes/health';
 import adminRoute from './routes/admin';
