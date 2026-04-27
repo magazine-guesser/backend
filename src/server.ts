@@ -1,15 +1,13 @@
 import Fastify from 'fastify'
 import dailyRoutes from './routes/daily'
 import healthRoute from './routes/health'
+import { DynamoMagazineRepository } from './dynamodb';
 
 const app = Fastify({ logger: true });
+const repo = new DynamoMagazineRepository();
 
-app.get('/', async () => {
-    return { hello: 'world' }
-})
-
-app.register(dailyRoutes, { prefix: '/daily' });
-app.register(healthRoute, { prefix: '/health'});
+app.register(dailyRoutes, { prefix: '/daily', repo })
+app.register(healthRoute, { prefix: '/health' })
 
 const start = async () => {
     try {
@@ -21,8 +19,8 @@ const start = async () => {
 }
 
 process.on('SIGTERM', async () => {
-  await app.close();
-  process.exit(0);
+    await app.close();
+    process.exit(0);
 });
 
 start()

@@ -1,0 +1,11 @@
+[
+    {
+        "date": "2000-01-01",
+        "nr": 1,
+        "identifier": "",
+        "title": "string",
+        "year": 1812,
+        "pageRange": [1, 5],
+        "redactions": []
+    }
+]
