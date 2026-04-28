@@ -9,15 +9,14 @@ export default async function (app: FastifyInstance, opts: { repo: IMagazineRepo
     Params: { date: string }
   }>('/magazines/:date', async (request) => {
     const { date } = request.params
-    const magazines = await repo.getMagazines(date)
-    return magazines
+    return await repo.getMagazines(date)
   })
 
   app.put<{
     Body: { magazines: Magazine[] }
   }>('/magazines', async (request) => {
     const { magazines } = request.body
-    repo.putMagazines(magazines)
+    await repo.putMagazines(magazines)
     return
   })
 
@@ -25,7 +24,7 @@ export default async function (app: FastifyInstance, opts: { repo: IMagazineRepo
     Body: { magazines: Magazine[] }
   }>('/magazines', async (request) => {
     const { magazines } = request.body
-    repo.deleteMagazines(magazines)
+    await repo.deleteMagazines(magazines)
     return
   })
 
@@ -35,7 +34,7 @@ export default async function (app: FastifyInstance, opts: { repo: IMagazineRepo
   }>('/magazines/:date/:nr', async (request) => {
     const { date, nr } = request.params
     const { magazine } = request.body
-    repo.editMagazine(date, nr, magazine)
+    return await repo.editMagazine(date, nr, magazine)
   })
 }
 
