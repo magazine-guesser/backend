@@ -1,1 +1,1 @@
-npm test && npx eslint src/ && npx prettier --write src/
+npm test && npx eslint src/ && npx prettier --write src/ && git add -u
