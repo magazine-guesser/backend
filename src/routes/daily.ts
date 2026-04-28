@@ -34,10 +34,12 @@ export default async function (app: FastifyInstance, opts: { repo: IMagazineRepo
     if (!year) return { status: 400 }
     const magazine = (await repo.getMagazine(date, nr)) ?? fallback[nr - 1]
 
+    const difference = Math.abs(year - magazine.year)
+
     return {
       correct_year: magazine.year,
-      difference: Math.abs(year - magazine.year),
-      score: 10, //TODO: calculate score
+      difference,
+      score: Math.max(0, 100 - difference),
     }
   })
 }
