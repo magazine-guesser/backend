@@ -49,6 +49,10 @@ jobs:
           role-to-assume: arn:aws:iam::464108382357:role/InfraStack-GithubOicdBackendRole8A101E36-TcMTmu673ZOi
           aws-region: eu-central-1
 
+      - name: Upload artifact to S3
+        run: |
+          aws s3 cp function.zip s3://magazineguessr-artifacts/backend/latest.zip
+
       - name: Deploy to Lambda
         run: |
           if [ "${{ github.ref_name }}" == "main" ]; then
