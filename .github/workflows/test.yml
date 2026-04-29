@@ -3,7 +3,8 @@ name: Test Backend
 on:
   workflow_call:
   push:
-    branches:
+    branches-ignore:
+      - main
       - dev
 
 jobs:
