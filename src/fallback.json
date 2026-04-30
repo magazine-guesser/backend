@@ -1,0 +1,29 @@
+[
+  {
+    "date": "2000-01-01",
+    "nr": 1,
+    "identifier": "wizard-magazine-011",
+    "title": "Wizard Magazine",
+    "year": 1992,
+    "pageRange": [1, 5],
+    "redactions": []
+  },
+  {
+    "date": "2000-01-01",
+    "nr": 2,
+    "identifier": "gamer-issue-02-september-2010",
+    "title": "Gamer",
+    "year": 2010,
+    "pageRange": [1, 5],
+    "redactions": []
+  },
+  {
+    "date": "2000-01-01",
+    "nr": 3,
+    "identifier": "Shadowland0502Images",
+    "title": "Shadowland",
+    "year": 1921,
+    "pageRange": [1, 5],
+    "redactions": []
+  }
+]

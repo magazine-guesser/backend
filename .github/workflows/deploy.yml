@@ -2,35 +2,77 @@ name: Deploy
 
 on:
   push:
-    branches: 
+    branches:
       - main
+      - dev
 
 permissions:
   id-token: write
   contents: read
 
 jobs:
-  build-and-push:
+  test:
+    uses: ./.github/workflows/test.yml
+
+  deploy:
     runs-on: ubuntu-latest
+    needs: test
 
     steps:
-      - name: Checkout Code
+      - name: Checkout code
         uses: actions/checkout@v4
-      
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Install production dependencies
+        run: npm ci --omit=dev --ignore-scripts
+
+      - name: Package
+        run: |
+          cp -r node_modules dist/
+          cd dist && zip -r ../function.zip .
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::464108382357:role/InfraStack-GithubOicdBackendRole8A101E36-TcMTmu673ZOi
           aws-region: eu-central-1
 
-      - name: Login ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v2
-
-      - name: build and push img
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+      - name: Upload artifact to S3
         run: |
-          docker build --platform linux/amd64 -t $ECR_REGISTRY/backend-images:latest .
-          docker push $ECR_REGISTRY/backend-images:latest
-        
+          aws s3 cp function.zip s3://magazineguessr-artifacts/backend/latest.zip
+
+      - name: Deploy to Lambda
+        run: |
+          if [ "${{ github.ref_name }}" == "main" ]; then
+            ALIAS=prod
+          else
+            ALIAS=dev
+          fi
+
+          aws lambda update-function-code \
+            --function-name magazineguessr-backend \
+            --zip-file fileb://function.zip
+
+          aws lambda wait function-updated \
+            --function-name magazineguessr-backend
+
+          VERSION=$(aws lambda publish-version \
+            --function-name magazineguessr-backend \
+            --query 'Version' --output text)
+
+          aws lambda update-alias \
+            --function-name magazineguessr-backend \
+            --name $ALIAS \
+            --function-version $VERSION
