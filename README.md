@@ -1,6 +1,6 @@
 # backend
 
-Fastify API for [magazineguessr.com](https://magazineguessr.com). Runs on AWS Lambda behind API Gateway.
+Fastify API for [magazineguessr.com](https://magazineguessr.com), a daily game where you flip through pages of old magazines and guess the publication year. Runs on AWS Lambda behind API Gateway.
 
 ---
 
