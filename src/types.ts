@@ -12,7 +12,7 @@ export type Magazine = {
   identifier: string
   title: string
   year: number
-  pageRange: [number, number]
+  pageRanges: [number, number][]
   redactions: Redaction[]
   startPage?: number
 }
