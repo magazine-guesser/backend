@@ -26,7 +26,11 @@
     "identifier": "Shadowland0502Images",
     "title": "Shadowland",
     "year": 1921,
-    "pageRanges": [[5, 8]],
+    "pageRanges": [
+      [1, 2],
+      [23, 24],
+      [47, 48]
+    ],
     "redactions": []
   }
 ]
