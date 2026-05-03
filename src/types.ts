@@ -19,6 +19,7 @@ export type Magazine = {
 
 export type PoolMagazine = {
   identifier: string
+  uuid?: string
   title: string
   year: number
   pageRanges: [number, number][]

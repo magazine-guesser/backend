@@ -1,3 +1,4 @@
+import { randomUUID } from 'crypto'
 import { IMagazineRepository, Magazine, PoolMagazine } from './types'
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb'
 import {
@@ -74,7 +75,7 @@ export class DynamoMagazineRepository implements IMagazineRepository {
       new BatchWriteCommand({
         RequestItems: {
           [poolTableName]: magazines.map((mag) => ({
-            PutRequest: { Item: mag },
+            PutRequest: { Item: { ...mag, uuid: randomUUID() } },
           })),
         },
       })
