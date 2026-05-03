@@ -11,6 +11,7 @@ export function buildApp() {
 
   app.register(cors, {
     origin: ['https://magazineguessr.com', 'http://localhost:5173'],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
   })
 
   app.register(dailyRoutes, { prefix: '/daily', repo })

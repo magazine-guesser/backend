@@ -1,4 +1,5 @@
-import { IMagazineRepository, Magazine } from './types'
+import { randomUUID } from 'crypto'
+import { IMagazineRepository, Magazine, PoolMagazine } from './types'
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb'
 import {
   BatchWriteCommand,
@@ -11,7 +12,8 @@ import {
 
 const client = new DynamoDBClient({})
 const docClient = DynamoDBDocumentClient.from(client)
-const tableName = process.env.TABLE_NAME as string
+const tableName = process.env.DAILY_TABLE_NAME as string
+const poolTableName = process.env.POOL_TABLE_NAME as string
 
 export class DynamoMagazineRepository implements IMagazineRepository {
   async getMagazines(date: string): Promise<Magazine[]> {
@@ -62,6 +64,18 @@ export class DynamoMagazineRepository implements IMagazineRepository {
                 nr: mag.nr,
               },
             },
+          })),
+        },
+      })
+    )
+  }
+
+  async putPoolMagazines(magazines: PoolMagazine[]): Promise<void> {
+    await docClient.send(
+      new BatchWriteCommand({
+        RequestItems: {
+          [poolTableName]: magazines.map((mag) => ({
+            PutRequest: { Item: { ...mag, uuid: randomUUID() } },
           })),
         },
       })
