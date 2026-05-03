@@ -21,7 +21,8 @@ Node 22, Fastify v5, DynamoDB via AWS SDK v3, `@fastify/aws-lambda` for the Lamb
 Create a `.env` at the project root:
 
 ```
-TABLE_NAME=magazines-daily
+DAILY_TABLE_NAME=magazines-daily
+POOL_TABLE_NAME=magazines-pool
 ADMIN_KEY=whatever
 AWS_REGION=eu-central-1
 ```
