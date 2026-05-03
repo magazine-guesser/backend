@@ -9,7 +9,7 @@ import {
   QueryCommand,
 } from '@aws-sdk/lib-dynamodb'
 
-const client = new DynamoDBClient({})
+const client = new DynamoDBClient({ endpoint: 'http://localhost:8000' })
 const docClient = DynamoDBDocumentClient.from(client)
 const tableName = process.env.DAILY_TABLE_NAME as string
 const poolTableName = process.env.POOL_TABLE_NAME as string
