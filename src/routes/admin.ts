@@ -1,5 +1,4 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify'
-import { IMagazineRepository, Magazine } from '../types'
 import { getAdminKey } from '../secrets'
 import { IMagazineRepository, Magazine, PoolMagazine } from '../types'
 
