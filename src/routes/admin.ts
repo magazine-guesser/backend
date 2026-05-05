@@ -1,4 +1,5 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify'
+import { getAdminKey } from '../secrets'
 import { IMagazineRepository, Magazine, PoolMagazine } from '../types'
 
 export default async function (app: FastifyInstance, opts: { repo: IMagazineRepository }) {
@@ -47,8 +48,10 @@ export default async function (app: FastifyInstance, opts: { repo: IMagazineRepo
 }
 
 const requireAdmin = async (request: FastifyRequest, reply: FastifyReply) => {
-  const key = request.headers['authorization']
-  if (!key || key !== process.env.ADMIN_KEY) {
+  const requestKey = request.headers['authorization']
+  const adminKey = await getAdminKey()
+
+  if (!requestKey || requestKey !== adminKey) {
     reply.code(403).send({ message: 'Unauthorized' })
   }
 }
