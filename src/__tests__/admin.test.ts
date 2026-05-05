@@ -24,6 +24,7 @@ const mockRepo: IMagazineRepository = {
   putMagazines: vi.fn().mockResolvedValue(undefined),
   deleteMagazines: vi.fn().mockResolvedValue(undefined),
   editMagazine: vi.fn().mockResolvedValue({ deleted: mockMagazine, previous: undefined }),
+  putPoolMagazines: vi.fn(),
 }
 
 const buildApp = () => {
