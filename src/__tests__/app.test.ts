@@ -1,5 +1,10 @@
-import { describe, test, expect } from 'vitest'
+import { vi, describe, test, expect } from 'vitest'
 import { buildApp } from '../app'
+
+vi.mock('../secrets', () => ({
+  getAdminKey: vi.fn().mockResolvedValue('test-secret'),
+  resetAdminKey: vi.fn(),
+}))
 
 // These tests verify that buildApp() returns a properly configured Fastify instance.
 // buildApp() is the shared entry point used by both server.ts (local dev) and lambda.ts (AWS).

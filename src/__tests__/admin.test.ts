@@ -3,13 +3,18 @@ import { vi, beforeEach, describe, test, expect } from 'vitest'
 import adminRoute from '../routes/admin'
 import { IMagazineRepository, Magazine } from '../types'
 
+vi.mock('../secrets', () => ({
+  getAdminKey: vi.fn().mockResolvedValue('test-secret'),
+  resetAdminKey: vi.fn(),
+}))
+
 const mockMagazine: Magazine = {
   date: '2024-01-01',
   nr: 1,
   identifier: 'test-identifier',
   title: 'Test Magazine',
   year: 1990,
-  pageRange: [1, 7],
+  pageRanges: [[1, 7]],
   redactions: [],
 }
 
@@ -19,6 +24,7 @@ const mockRepo: IMagazineRepository = {
   putMagazines: vi.fn().mockResolvedValue(undefined),
   deleteMagazines: vi.fn().mockResolvedValue(undefined),
   editMagazine: vi.fn().mockResolvedValue({ deleted: mockMagazine, previous: undefined }),
+  putPoolMagazines: vi.fn(),
 }
 
 const buildApp = () => {
@@ -28,7 +34,6 @@ const buildApp = () => {
 }
 
 beforeEach(() => {
-  process.env.ADMIN_KEY = 'test-secret'
   vi.clearAllMocks()
 })
 

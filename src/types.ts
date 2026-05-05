@@ -12,7 +12,17 @@ export type Magazine = {
   identifier: string
   title: string
   year: number
-  pageRange: [number, number]
+  pageRanges: [number, number][]
+  redactions: Redaction[]
+  startPage?: number
+}
+
+export type PoolMagazine = {
+  identifier: string
+  uuid?: string
+  title: string
+  year: number
+  pageRanges: [number, number][]
   redactions: Redaction[]
   startPage?: number
 }
@@ -30,4 +40,5 @@ export interface IMagazineRepository {
     deleted: Magazine | undefined
     previous: Magazine | undefined
   }>
+  putPoolMagazines(magazines: PoolMagazine[]): Promise<void>
 }

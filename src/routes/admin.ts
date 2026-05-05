@@ -1,5 +1,6 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify'
-import { IMagazineRepository, Magazine } from '../types'
+import { getAdminKey } from '../secrets'
+import { IMagazineRepository, Magazine, PoolMagazine } from '../types'
 
 export default async function (app: FastifyInstance, opts: { repo: IMagazineRepository }) {
   const repo = opts.repo
@@ -28,6 +29,14 @@ export default async function (app: FastifyInstance, opts: { repo: IMagazineRepo
     return
   })
 
+  app.put<{
+    Body: { magazines: PoolMagazine[] }
+  }>('/pool', async (request) => {
+    const { magazines } = request.body
+    await repo.putPoolMagazines(magazines)
+    return
+  })
+
   app.patch<{
     Params: { date: string; nr: number }
     Body: { magazine: Magazine }
@@ -39,8 +48,10 @@ export default async function (app: FastifyInstance, opts: { repo: IMagazineRepo
 }
 
 const requireAdmin = async (request: FastifyRequest, reply: FastifyReply) => {
-  const key = request.headers['authorization']
-  if (!key || key !== process.env.ADMIN_KEY) {
+  const requestKey = request.headers['authorization']
+  const adminKey = await getAdminKey()
+
+  if (!requestKey || requestKey !== adminKey) {
     reply.code(403).send({ message: 'Unauthorized' })
   }
 }

@@ -1,6 +1,6 @@
 # backend
 
-Fastify API for [magazineguessr.com](https://magazineguessr.com). Runs on AWS Lambda behind API Gateway.
+Fastify API for [magazineguessr.com](https://magazineguessr.com), a daily game where you flip through pages of old magazines and guess the publication year. Runs on AWS Lambda behind API Gateway.
 
 ---
 
@@ -21,7 +21,8 @@ Node 22, Fastify v5, DynamoDB via AWS SDK v3, `@fastify/aws-lambda` for the Lamb
 Create a `.env` at the project root:
 
 ```
-TABLE_NAME=magazines-daily
+DAILY_TABLE_NAME=magazines-daily
+POOL_TABLE_NAME=magazines-pool
 ADMIN_KEY=whatever
 AWS_REGION=eu-central-1
 ```
