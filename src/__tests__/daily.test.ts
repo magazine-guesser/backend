@@ -119,7 +119,7 @@ describe('POST /daily/:date/:nr/guess', () => {
       payload: { year: 1990 },
     })
     expect(res.statusCode).toBe(200)
-    expect(res.json()).toEqual({ correct_year: 1990, difference: 0, score: 100 })
+    expect(res.json()).toEqual({ correct_year: 1990, difference: 0, score: 1000 })
   })
 
   test('score decreases by 1 per year off', async () => {
@@ -130,7 +130,7 @@ describe('POST /daily/:date/:nr/guess', () => {
       url: '/daily/2024-01-01/1/guess',
       payload: { year: 1980 },
     })
-    expect(res.json()).toMatchObject({ difference: 10, score: 90 })
+    expect(res.json()).toMatchObject({ difference: 10, score: 900 })
   })
 
   test('score exactly 0', async () => {
@@ -141,7 +141,7 @@ describe('POST /daily/:date/:nr/guess', () => {
       url: '/daily/2024-01-01/1/guess',
       payload: { year: 1890 }, // 100 years off
     })
-    expect(res.json()).toMatchObject({ difference: 100, score: 0 })
+    expect(res.json()).toMatchObject({ difference: 100, score: 0 }) // 1000 - 100*10 = 0
   })
 
   test('score floors at 0 even when difference exceeds 100', async () => {
@@ -195,7 +195,7 @@ describe('POST /daily/:date/:nr/guess', () => {
       url: '/daily/2024-01-01/1/guess',
       payload: { year: 1992 },
     })
-    expect(res.json()).toMatchObject({ correct_year: 1992, score: 100 })
+    expect(res.json()).toMatchObject({ correct_year: 1992, score: 1000 })
   })
 
   test('calls getMagazine with date and nr params', async () => {
