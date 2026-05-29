@@ -75,7 +75,7 @@ export class DynamoMagazineRepository implements IMagazineRepository {
       new BatchWriteCommand({
         RequestItems: {
           [poolTableName]: magazines.map((mag) => ({
-            PutRequest: { Item: { ...mag, uuid: randomUUID() } },
+            PutRequest: { Item: { ...mag, uuid: randomUUID(), status: 'BACKLOG' } },
           })),
         },
       })

@@ -39,7 +39,7 @@ export default async function (app: FastifyInstance, opts: { repo: IMagazineRepo
     return {
       correct_year: magazine.year,
       difference,
-      score: Math.max(0, 100 - difference),
+      score: Math.max(0, 1000 - difference * 10),
     }
   })
 }

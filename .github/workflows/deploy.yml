@@ -46,7 +46,7 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::464108382357:role/InfraStack-GithubOicdBackendRole8A101E36-TcMTmu673ZOi
+          role-to-assume: arn:aws:iam::${{ vars.AWS_ACCOUNT_ID }}:role/mg-github-backend
           aws-region: eu-central-1
 
       - name: Upload artifact to S3
